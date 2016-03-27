@@ -7,5 +7,6 @@ public class Hello{
 		system.out.println("2222222222222222222");
 		system.out.println("5555555555");
 		system.out.println("master master");
+		system.out.println("处理下冲突");
 	}
 }
