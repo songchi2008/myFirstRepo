@@ -14,6 +14,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
+		System.out.println("Hello world .");
 		// Spider.create(new
 		// OschinaBlogPageProcesser()).addUrl("http://my.oschina.net/flashsword/blog")
 		// .addPipeline(new ConsolePipeline()).run();
