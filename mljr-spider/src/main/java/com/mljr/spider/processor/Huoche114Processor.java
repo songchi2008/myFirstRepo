@@ -5,7 +5,6 @@ package com.mljr.spider.processor;
 
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
-import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.selector.Selectable;
 
 /**
@@ -13,7 +12,7 @@ import us.codecraft.webmagic.selector.Selectable;
  *         2016年11月6日,上午12:09:32
  *
  */
-public class Huoche114Processor implements PageProcessor {
+public class Huoche114Processor extends AbstractPageProcessor {
 
 	private Site site = Site.me().setRetrySleepTime(1500).setRetryTimes(3).setUserAgent(
 			"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36");
