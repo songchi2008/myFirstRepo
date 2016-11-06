@@ -8,6 +8,7 @@
 
 	<modules>
 		<module>webmagic</module>
+		<module>mljr-spider</module>
 	</modules>
 
 	<properties>
