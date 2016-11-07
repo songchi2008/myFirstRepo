@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Mapper.mljr_test">
+   <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" />
+    <resultMap id="MljrTestResult" type="com.mljr.spider.model.MljrTestDo">
+        <result column="ID" property="id" />
+        <result column="NAME" property="name" />
+        <result column="GMT_MODIFIED" property="gmtModified" />
+        <result column="GMT_CREATE" property="gmtCreate" />
+    </resultMap>
+
+    <select id="load" resultMap="MljrTestResult" parameterType="java.util.HashMap">
+        select `ID`, `NAME`, `GMT_MODIFIED`, `GMT_CREATE`
+        FROM mljr_test
+        WHERE ID = #{ID}
+    </select>
+
+    <delete id="delete" parameterType="java.util.HashMap">
+        delete from mljr_test
+        WHERE ID = #{ID}
+    </delete>
+
+    <insert id="create" parameterType="com.mljr.spider.model.MljrTestDo">
+        insert into mljr_test (`ID`, `NAME`, `GMT_MODIFIED`, `GMT_CREATE`) 
+        values (#{id}, #{name}, now(), now())
+    </insert>
+
+    <update id="update" parameterType="com.mljr.spider.model.MljrTestDo">
+        update mljr_test
+      <set>
+          <if test="id != null">`ID` = #{id},</if>
+          <if test="name != null">`NAME` = #{name},</if>
+          gmt_modified = now()
+      </set>
+        WHERE ID = #{ID}
+    </update>
+
+    <select id="listByPage" resultMap="MljrTestResult" parameterType="java.util.HashMap">
+        SELECT t2.`ID`, t2.`NAME`, t2.`GMT_MODIFIED`, t2.`GMT_CREATE`
+        FROM (
+                 SELECT ID FROM mljr_test                 WHERE 1                  ORDER BY ID
+                 LIMIT #{startIndex},#{pageSize})t1,mljr_test t2 WHERE t1.ID = t2.ID
+    </select>
+
+    <select id="listByPageCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+        SELECT count(*) 
+        FROM mljr_test         WHERE 1 
+    </select>
+</mapper>

@@ -3,7 +3,6 @@
  */
 package com.mljr.spider.processor;
 
-import java.sql.Time;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -22,7 +21,6 @@ public class BaiduMobileProcessorTests {
 	private static final String URL2 = "https://sp0.baidu.com/8aQDcjqpAAV3otqbppnN2DJv/api.php?query=%s&co=&resource_id=6004&t=%s&ie=utf8&oe=gbk&cb=&format=json&tn=baidu&cb=";
 
 	public BaiduMobileProcessorTests() {
-
 	}
 
 	/**
