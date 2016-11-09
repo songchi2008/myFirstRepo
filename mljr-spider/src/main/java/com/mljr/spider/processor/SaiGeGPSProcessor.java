@@ -3,6 +3,9 @@
  */
 package com.mljr.spider.processor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 
@@ -13,7 +16,9 @@ import us.codecraft.webmagic.Site;
  */
 public class SaiGeGPSProcessor extends AbstractPageProcessor {
 
-	private Site site = Site.me();
+	protected transient Logger gps = LoggerFactory.getLogger("gps-data");
+
+	private Site site = Site.me().setDomain("saige-gps");
 
 	public SaiGeGPSProcessor() {
 		super();
@@ -21,7 +26,7 @@ public class SaiGeGPSProcessor extends AbstractPageProcessor {
 
 	@Override
 	public void process(Page page) {
-		System.out.println(page.getJson().get());
+		gps.info(page.getJson().get());
 	}
 
 	@Override

@@ -16,6 +16,7 @@
 		<module>webmagic</module>
 		<module>mljr-spider</module>
 		<module>mljr-dao</module>
+		<module>umq-client</module>
 	</modules>
 
 	<properties>

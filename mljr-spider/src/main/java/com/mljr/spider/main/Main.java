@@ -3,6 +3,8 @@
  */
 package com.mljr.spider.main;
 
+import com.mljr.spider.scheduler.manager.Manager;
+
 /**
  * @author Ckex zha </br>
  *         2016年11月6日,上午12:04:50
@@ -10,9 +12,6 @@ package com.mljr.spider.main;
  */
 public class Main {
 
-	/**
-	 * 
-	 */
 	public Main() {
 		super();
 	}
@@ -21,8 +20,14 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		Manager manager = new Manager();
+		manager.run();
+		synchronized (Main.class) {
+			try {
+				Main.class.wait();
+			} catch (InterruptedException e) {
+			}
+		}
 	}
 
 }
