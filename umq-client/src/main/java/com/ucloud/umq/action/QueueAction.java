@@ -39,7 +39,7 @@ public class QueueAction {
         ObjectMapper mapper = new ObjectMapper();
         CreateQueueResponse apiRes = null;
         try {
-            System.out.println(res);
+//            System.out.println(res);
             apiRes = mapper.readValue(res, CreateQueueResponse.class);
         } catch (IOException e) {
             e.printStackTrace();

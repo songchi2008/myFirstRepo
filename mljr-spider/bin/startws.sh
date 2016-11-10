@@ -115,7 +115,7 @@ echo -e "Starting havana monitor server $HOST_NAME ...\c"
 		if [ ! -d $STORE_PATH ]; then
 			mkdir $STORE_PATH
 		fi
-	STDOUT_LOG=$LOG_DIR/gen.stdout.log
+	STDOUT_LOG=$LOG_DIR/spider.stdout.log
 	nohup $JAVA_HOME/bin/java $JAVA_OPTS -classpath $CONFIG_DIR:$LIB_JARS  com.mljr.spider.main.Main >> $STDOUT_LOG 2>&1 &
 
 echo "OK!"

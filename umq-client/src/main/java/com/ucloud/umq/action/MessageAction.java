@@ -42,7 +42,9 @@ public class MessageAction {
         if (msgs == null) {
             throw new ServerResponseException(-1, "Response parse queues error");
         }
-
+		if (msgs.isEmpty()) {
+			return null;
+		}
         return msgs.get(0);
     }
 
