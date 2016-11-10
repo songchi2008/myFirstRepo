@@ -26,7 +26,7 @@ public class SaiGeGPSProcessor extends AbstractPageProcessor {
 
 	@Override
 	public void process(Page page) {
-		gps.info(page.getJson().get());
+		page.putField(page.getUrl().get(), page.getJson().get());
 	}
 
 	@Override

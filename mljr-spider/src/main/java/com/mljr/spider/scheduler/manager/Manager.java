@@ -15,12 +15,12 @@ import com.mljr.spider.downloader.RestfulDownloader;
 import com.mljr.spider.processor.SaiGeGPSProcessor;
 import com.mljr.spider.scheduler.AbstractScheduler.ConsumerMessage;
 import com.mljr.spider.scheduler.SaiGeGPSScheduler;
+import com.mljr.spider.storage.LogPipeline;
 import com.mljr.spider.umq.UMQClient;
 import com.ucloud.umq.common.ServiceAttributes;
 import com.ucloud.umq.model.Message;
 
 import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.pipeline.ConsolePipeline;
 
 /**
  * @author Ckex zha </br>
@@ -54,8 +54,9 @@ public class Manager {
 	// 赛格GPS数据
 	private void startSaiGeGPS() {
 		final String queueId = "umq-luj3bt";
+		final String logName = "gps-data";
 		final Spider spider = Spider.create(new SaiGeGPSProcessor()).setDownloader(new RestfulDownloader()).thread(3)
-				.addPipeline(new ConsolePipeline());
+				.addPipeline(new LogPipeline(logName));
 		spider.setScheduler(new SaiGeGPSScheduler(spider, new ConsumerMessage() {
 
 			@Override
