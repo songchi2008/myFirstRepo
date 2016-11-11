@@ -4,10 +4,8 @@
 package com.mljr.spider.umq;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.servlet.RequestToViewNameTranslator;
 
 import com.ucloud.umq.action.MessageAction;
 import com.ucloud.umq.action.RoleAction;

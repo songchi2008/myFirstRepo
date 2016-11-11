@@ -3,9 +3,6 @@
  */
 package com.mljr.spider.scheduler;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.TimeUnit;
-
 import com.mljr.spider.request.AbstractRequest;
 import com.mljr.spider.request.RestfulReqeust;
 import com.ucloud.umq.model.Message;
@@ -25,32 +22,18 @@ public class SaiGeGPSScheduler extends AbstractScheduler {
 
 	private static final String params = "{\"callLetter\":\"\",\"flag\":true,\"sign\":\"335BB919C5476417E424FF6F0BC5AD6F\"}";
 
-	private ConcurrentLinkedQueue<Request> queue = new ConcurrentLinkedQueue<Request>();
-
 	public SaiGeGPSScheduler(Spider spider, ConsumerMessage consumerMessage) {
 		super(spider, consumerMessage);
 	}
 
 	@Override
 	public void push(Request request, Task task) {
-		queue.add(request);
-		logger.debug("push ..." + request);
+		put(request);
 	}
 
 	@Override
 	public Request poll(Task task) {
-		while (true) {
-			Request res = queue.poll();
-			if (res == null) {
-				try {
-					TimeUnit.SECONDS.sleep(10);
-					logger.info("queue is empty.");
-				} catch (InterruptedException e) {
-				}
-			} else {
-				return res;
-			}
-		}
+		return take();
 	}
 
 	@Override

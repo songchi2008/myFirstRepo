@@ -3,7 +3,6 @@
  */
 package com.mljr.spider.processor;
 
-import java.util.Arrays;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
@@ -13,6 +12,7 @@ import com.google.common.base.Splitter;
 
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
+import us.codecraft.webmagic.selector.Html;
 import us.codecraft.webmagic.selector.Selectable;
 
 /**
@@ -31,22 +31,33 @@ public class BaiduMobileProcessor extends AbstractPageProcessor {
 
 	@Override
 	public void process(Page page) {
-		Selectable div = page.getHtml().xpath("//div[@class='op_mobilephone_r']");
+		//
+		Html html = page.getHtml();
+		if (html == null) {
+			return;
+		}
+		Selectable div = html.xpath("//div[@class='op_mobilephone_r']");
 		if (div.match()) {
-			page.putField("电话号码", div.xpath("//span[1]/text()"));
+			page.putField("mobile", div.xpath("//span[1]/text()"));
 			String location = div.xpath("//span[2]/text()").get();
 			List<String> res = Splitter.onPattern("  ").omitEmptyStrings().trimResults().splitToList(location);
 			page.putField("type", res.get(0));
 			page.putField("city", res.get(1));
-		} else {
-			JSONObject jsonObject = JSON.parseObject(page.getJson().get());
-			JSONArray dataArray = jsonObject.getJSONArray("data");
-			if (dataArray != null && !dataArray.isEmpty()) {
-				JSONObject dataObj = (JSONObject) dataArray.get(0);
-				page.putField("电话号码", dataObj.get("phoneno"));
-				page.putField("type", dataObj.get("type"));
-				page.putField("city", dataObj.get("city"));
-			}
+			return;
+		}
+		div = html.xpath("//div[@class='op_liarphone2_word']");
+		if (div.match()) {
+			page.putField("content", div.get());
+			return;
+		}
+		JSONObject jsonObject = JSON.parseObject(page.getJson().get());
+		JSONArray dataArray = jsonObject.getJSONArray("data");
+		if (dataArray != null && !dataArray.isEmpty()) {
+			page.putField(JSON_FIELD, page.getJson().get());
+			// JSONObject dataObj = (JSONObject) dataArray.get(0);
+			// page.putField("mobile", dataObj.get("phoneno"));
+			// page.putField("type", dataObj.get("type"));
+			// page.putField("city", dataObj.get("city"));
 		}
 	}
 

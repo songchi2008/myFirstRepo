@@ -196,6 +196,11 @@
 				<version>0.0.1</version>
 			</dependency>
 			<dependency>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-util</artifactId>
+				<version>7.0.0.pre5</version>
+			</dependency>
+			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
@@ -293,6 +298,10 @@
 		<dependency>
 			<groupId>share</groupId>
 			<artifactId>common.utils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty-util</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

@@ -22,6 +22,8 @@ public abstract class AbstractPageProcessor implements PageProcessor {
 
 	protected Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
 
+	public static final String JSON_FIELD = "JSON";
+
 	public AbstractPageProcessor() {
 		super();
 	}

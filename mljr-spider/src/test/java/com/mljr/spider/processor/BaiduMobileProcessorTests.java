@@ -28,8 +28,8 @@ public class BaiduMobileProcessorTests {
 	 * @throws InterruptedException
 	 */
 	public static void main(String[] args) throws InterruptedException {
-		String url = String.format(URL, "15601662655", "15601662655");
-		String url2 = String.format(URL2, "15601662655+%E6%89%8B%E6%9C%BA%E5%8F%B7%E6%AE%B5",
+		String url = String.format(URL, "03178117334", "03178117334");
+		String url2 = String.format(URL2, "03178117334+%E6%89%8B%E6%9C%BA%E5%8F%B7%E6%AE%B5",
 				new Date().getTime() + "");
 		Spider spider = Spider.create(new BaiduMobileProcessor()).addUrl(url).addPipeline(new ConsolePipeline());
 		TimeUnit.SECONDS.sleep(1);

@@ -1,6 +1,8 @@
 #!/bin/bash
 #set ($jmx_port = 8883 )
 #set ($debug_port = 1088 )
+APP_NAME=spider
+MAIN_PATH=com.mljr.spider.main.Main
 PRODUCTION=run
 JAVA_HOME=/usr/local/java
 OUTPUT_HOME=/data/var/log/mljr
