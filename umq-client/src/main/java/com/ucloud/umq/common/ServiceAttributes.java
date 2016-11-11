@@ -84,6 +84,14 @@ public class ServiceAttributes {
 		return properties.getProperty("umq.WsUrl");
 	}
 
+	public static String getConsumerId() {
+		return properties.getProperty("umq.ConsumerId");
+	}
+
+	public static String getConsumerToken() {
+		return properties.getProperty("umq.ConsumerToken");
+	}
+
 	public static int getOrganizationId() {
 		String orgId = properties.getProperty("ucloud.OrganizationId");
 		return Integer.parseInt(orgId);

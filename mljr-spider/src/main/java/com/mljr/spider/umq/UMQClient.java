@@ -51,9 +51,13 @@ public class UMQClient {
 		if (StringUtils.isBlank(queueId)) {
 			throw new IllegalArgumentException("QueueID can't be null.");
 		}
-		List<Role> consumers = RoleAction.createRole(region, queueId, 1, role);
-		Role consumer = consumers.get(0);
-		return MessageAction.pullMsg(region, queueId, consumer.getId(), consumer.getToken());
+		// List<Role> consumers = RoleAction.createRole(region, queueId, 1,
+		// role);
+		// Role consumer = consumers.get(0);
+		// return MessageAction.pullMsg(region, queueId, consumer.getId(),
+		// consumer.getToken());
+		return MessageAction.pullMsg(region, queueId, ServiceAttributes.getConsumerId(),
+				ServiceAttributes.getConsumerToken());
 	}
 
 	public boolean ackMsg(String region, String role, String queueId, String msgId) throws ServerResponseException {

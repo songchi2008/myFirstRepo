@@ -120,6 +120,9 @@
 	<logger name="org.apache.http" level="INFO" />
 	<logger name="org.I0Itec.zkclient" level="INFO" />
 	<logger name="us.codecraft.webmagic" level="INFO" />
+	<logger name="com.mljr.spider.scheduler.manager.Manager" level="DEBUG" />
+	<logger name="com.mljr.spider.scheduler.manager" level="DEBUG" />
+	<logger name="com.mljr.spider.scheduler" level="DEBUG" />
 	<logger name="com.mljr.spider" level="DEBUG" />
 
 	<logger name="gps-data" level="INFO" additivity="false">
