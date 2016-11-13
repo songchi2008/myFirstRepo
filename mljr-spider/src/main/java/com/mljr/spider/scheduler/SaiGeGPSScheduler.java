@@ -3,9 +3,11 @@
  */
 package com.mljr.spider.scheduler;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.mljr.spider.request.AbstractRequest;
 import com.mljr.spider.request.RestfulReqeust;
-import com.ucloud.umq.model.Message;
+import com.mljr.spider.umq.UMQMessage;
 
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Spider;
@@ -22,8 +24,8 @@ public class SaiGeGPSScheduler extends AbstractScheduler {
 
 	private static final String params = "{\"callLetter\":\"\",\"flag\":true,\"sign\":\"335BB919C5476417E424FF6F0BC5AD6F\"}";
 
-	public SaiGeGPSScheduler(Spider spider, ConsumerMessage consumerMessage) {
-		super(spider, consumerMessage);
+	public SaiGeGPSScheduler(Spider spider, String queueId) throws Exception {
+		super(spider, queueId);
 	}
 
 	@Override
@@ -53,8 +55,15 @@ public class SaiGeGPSScheduler extends AbstractScheduler {
 	}
 
 	@Override
-	public boolean pushTask(Spider spider, Message message) {
-		pushTask(spider);
+	public boolean pushTask(Spider spider, UMQMessage message) {
+		boolean isGps = StringUtils.startsWithIgnoreCase(message.msgData.getMsgBody(), "gps");
+		if (isGps) {
+			pushTask(spider);
+		}
+		if (logger.isDebugEnabled()) {
+			logger.debug("process msg " + isGps + "," + message);
+		}
+		// skip
 		return true;
 	}
 

@@ -3,7 +3,8 @@
  */
 package com.mljr.spider.scheduler;
 
-import com.ucloud.umq.model.Message;
+import com.google.common.base.CharMatcher;
+import com.mljr.spider.umq.UMQMessage;
 
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Spider;
@@ -18,8 +19,8 @@ public class JuheMobileScheduler extends AbstractScheduler {
 
 	public static final String URL = "http://op.juhe.cn/onebox/phone/query?tel=%s&key=d3baaded0db0ea2dd0a359fb485e3d60";
 
-	public JuheMobileScheduler(Spider spider, ConsumerMessage consumerMessage) {
-		super(spider, consumerMessage);
+	public JuheMobileScheduler(Spider spider, String queueId) throws Exception {
+		super(spider, queueId);
 	}
 
 	@Override
@@ -43,8 +44,9 @@ public class JuheMobileScheduler extends AbstractScheduler {
 	}
 
 	@Override
-	public boolean pushTask(Spider spider, Message message) {
-		String url = String.format(URL, message.getMsgBody());
+	public boolean pushTask(Spider spider, UMQMessage message) {
+		String url = String.format(URL, message.msgData.getMsgBody());
+		url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
 		push(new Request(url), spider);
 		return true;
 	}

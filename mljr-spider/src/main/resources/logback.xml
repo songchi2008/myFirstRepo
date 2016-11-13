@@ -8,8 +8,8 @@
 <!-- http://www.qos.ch/shop/products/professionalSupport -->
 <!-- -->
 <configuration scan="true" scanPeriod="300 seconds" debug="ture">
-	<property name="APP_NAME" value="mljr" />
-	<property name="LOG_HOME" value="/data/var/log/mljr" />
+	<!-- <property name="APP_NAME" value="mljr" /> -->
+	<property name="LOG_HOME" value="${OUTPUT_HOME}" /><!-- /data/var/log/mljr -->
 	<contextName>${APP_NAME}</contextName>
 
 	<appender name="STDOUT"

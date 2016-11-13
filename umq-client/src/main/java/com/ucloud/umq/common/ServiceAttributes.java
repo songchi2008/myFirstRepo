@@ -72,6 +72,14 @@ public class ServiceAttributes {
 		return properties.getProperty("ucloud.Region");
 	}
 
+	public static String getHost() {
+		return properties.getProperty("ucloud.Host");
+	}
+
+	public static String getAccount() {
+		return properties.getProperty("ucloud.Account");
+	}
+
 	public static String getRole() {
 		return properties.getProperty("umq.Role");
 	}

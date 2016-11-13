@@ -6,6 +6,7 @@ package com.mljr.spider.pattern;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 
 /**
@@ -26,6 +27,17 @@ public class PatternTests {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		String url = "http://op.juhe.cn/onebox/phone/query?tel= 031185923183\n"
+				+ "&key=d3baaded0db0ea2dd0a359fb485e3d60";
+		System.out.println(url);
+		url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
+		System.out.println(url);
+		for (int i = 0; i < 100; i++) {
+			if (Math.random() * 100 < 5) {
+				System.out.println("xxx");
+			}
+		}
+
 		Pattern pat = Pattern.compile("\'(.*?)\'");
 		pat = Pattern.compile("(?<=\\()(.+?)(?=\\))"); // 宽断言,(?<=exp)匹配exp后面的位置
 		String str = "<a href=\"#\" onClick=\"return open_new_window( '/patroninfo~S0*chx/1069163/modpinfo' )\">";

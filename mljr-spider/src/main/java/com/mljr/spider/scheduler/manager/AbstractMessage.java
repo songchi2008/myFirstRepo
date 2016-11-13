@@ -9,16 +9,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Stopwatch;
-import com.mljr.spider.scheduler.AbstractScheduler.ConsumerMessage;
-import com.mljr.spider.umq.UMQClient;
-import com.ucloud.umq.common.ServiceAttributes;
-import com.ucloud.umq.model.Message;
 
 /**
  * @author Ckex zha </br>
@@ -54,52 +48,52 @@ public abstract class AbstractMessage {
 				}
 			}, new ThreadPoolExecutor.CallerRunsPolicy());
 
-	protected ConsumerMessage getConsumerMessage(final String queueId) {
+//	protected ConsumerMessage getConsumerMessage(final String queueId) {
+//
+//		return new ConsumerMessage() {
+//
+//			@Override
+//			public Message getMessage() {
+//				return getUMQMessage(queueId);
+//			}
+//
+//			@Override
+//			public void confirmMsg(Message msg) {
+//				aksMessage(queueId, msg.getMsgId());
+//			}
+//
+//		};
+//	}
 
-		return new ConsumerMessage() {
+//	private Message getUMQMessage(String queueId) {
+//		Stopwatch watch = Stopwatch.createStarted();
+//		Message message = null;
+//		try {
+//			message = UMQClient.getInstence().getMessage(ServiceAttributes.getRegion(), ServiceAttributes.getRole(),
+//					queueId);
+//			watch.stop();
+//			if (Math.random() * 100 < 1 && logger.isDebugEnabled()) {
+//				logger.debug(String.format("[%s] usetime=%s-ms,pull msg =%s", queueId,
+//						watch.elapsed(TimeUnit.MILLISECONDS), message));
+//			}
+//		} catch (Throwable e) {
+//			logger.error("[" + queueId + "] pull message Error," + ExceptionUtils.getStackTrace(e));
+//		}
+//		return message;
+//	}
 
-			@Override
-			public Message getMessage() {
-				return getUMQMessage(queueId);
-			}
-
-			@Override
-			public void confirmMsg(Message msg) {
-				aksMessage(queueId, msg.getMsgId());
-			}
-
-		};
-	}
-
-	private Message getUMQMessage(String queueId) {
-		Stopwatch watch = Stopwatch.createStarted();
-		Message message = null;
-		try {
-			message = UMQClient.getInstence().getMessage(ServiceAttributes.getRegion(), ServiceAttributes.getRole(),
-					queueId);
-			watch.stop();
-			if (logger.isDebugEnabled()) {
-				logger.debug(String.format("[%s] usetime=%s-ms,pull message =%s", queueId,
-						watch.elapsed(TimeUnit.MILLISECONDS), message));
-			}
-		} catch (Throwable e) {
-			logger.error("UMQ pull message Error," + ExceptionUtils.getStackTrace(e));
-		}
-		return message;
-	}
-
-	private void aksMessage(String queueId, String msgId) {
-		boolean succ = false;
-		try {
-			succ = UMQClient.getInstence().ackMsg(ServiceAttributes.getRegion(), ServiceAttributes.getRole(), queueId,
-					msgId);
-		} catch (Exception e) {
-			logger.error("Ask message Error, " + ExceptionUtils.getStackTrace(e));
-		}
-		if (!succ) {
-			logger.warn("Ask message false," + queueId + " - " + msgId);
-		}
-
-	}
+//	private void aksMessage(String queueId, String msgId) {
+//		boolean succ = false;
+//		try {
+//			succ = UMQClient.getInstence().ackMsg(ServiceAttributes.getRegion(), ServiceAttributes.getRole(), queueId,
+//					msgId);
+//		} catch (Exception e) {
+//			logger.error("Ask message Error, " + ExceptionUtils.getStackTrace(e));
+//		}
+//		if (!succ) {
+//			logger.warn("Ask message false," + queueId + " - " + msgId);
+//		}
+//
+//	}
 
 }

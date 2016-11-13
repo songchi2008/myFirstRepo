@@ -3,17 +3,18 @@
  */
 package com.mljr.spider.umq;
 
-import java.util.List;
+import java.net.URISyntaxException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.ucloud.umq.action.MessageAction;
-import com.ucloud.umq.action.RoleAction;
-import com.ucloud.umq.action.UmqConnection;
+import com.ucloud.umq.action.HttpClient;
+import com.ucloud.umq.action.MessageData;
+import com.ucloud.umq.action.MsgHandler;
 import com.ucloud.umq.client.ServerResponseException;
 import com.ucloud.umq.common.ServiceAttributes;
-import com.ucloud.umq.model.Message;
-import com.ucloud.umq.model.Role;
 
 /**
  * @author Ckex zha </br>
@@ -22,15 +23,37 @@ import com.ucloud.umq.model.Role;
  */
 public class UMQClient {
 
+	protected transient Logger logger = LoggerFactory.getLogger(getClass());
+
+	private final HttpClient client;
+
+	private final String host;
+	private final String publicKey;
+	private final String privateKey;
+	private final String region;
+	private final String account;
+	private final String projectId;
+	private final String consumerId;
+	private final String consumerToken;
+	private final Integer organizationId;
+
 	private UMQClient() {
 		super();
-		initConnection();
+		this.host = ServiceAttributes.getHost();
+		this.region = ServiceAttributes.getRegion();
+		this.account = ServiceAttributes.getAccount();
+		this.publicKey = ServiceAttributes.getPublicKey();
+		this.projectId = ServiceAttributes.getProjectId();
+		this.consumerId = ServiceAttributes.getConsumerId();
+		this.privateKey = ServiceAttributes.getPrivateKey();
+		this.consumerToken = ServiceAttributes.getConsumerToken();
+		this.organizationId = ServiceAttributes.getOrganizationId();
+		this.client = initConnection();
 	}
 
-	private void initConnection() {
-		String publicKey = ServiceAttributes.getPublicKey();
-		String privateKey = ServiceAttributes.getPrivateKey();
-		UmqConnection.NewConnection(publicKey, privateKey);
+	private HttpClient initConnection() {
+		return HttpClient.NewClient(this.host, this.publicKey, this.privateKey, this.region, this.account,
+				this.projectId);
 	}
 
 	private static class UMQClientHolder {
@@ -41,34 +64,82 @@ public class UMQClient {
 		return UMQClientHolder.instance;
 	}
 
-	public Message getMessage(String region, String role, String queueId) throws ServerResponseException {
-		if (StringUtils.isBlank(region)) {
-			region = ServiceAttributes.getRegion();
-		}
-		if (StringUtils.isBlank(role)) {
-			role = ServiceAttributes.getRole();
-		}
-		if (StringUtils.isBlank(queueId)) {
-			throw new IllegalArgumentException("QueueID can't be null.");
-		}
-		// List<Role> consumers = RoleAction.createRole(region, queueId, 1,
-		// role);
-		// Role consumer = consumers.get(0);
-		// return MessageAction.pullMsg(region, queueId, consumer.getId(),
-		// consumer.getToken());
-		return MessageAction.pullMsg(region, queueId, ServiceAttributes.getConsumerId(),
-				ServiceAttributes.getConsumerToken());
+	public void subscribeQueue(MessageHandler handler) throws URISyntaxException {
+		logger.info("subscribe queue " + handler.queueId);
+		this.client.subscribeQueue(this.organizationId, handler.queueId, consumerId, consumerToken, handler);
 	}
 
-	public boolean ackMsg(String region, String role, String queueId, String msgId) throws ServerResponseException {
-		if (StringUtils.isBlank(region)) {
-			region = ServiceAttributes.getRegion();
+	private void ackMessage(String queueId, MessageData msg) {
+		try {
+			this.client.ackMsg(queueId, consumerId, msg.getMsgId());
+		} catch (ServerResponseException e) {
+			logger.error(String.format("%s %s Ack message error %s", queueId, msg.toString(),
+					ExceptionUtils.getStackTrace(e)));
 		}
-		if (StringUtils.isBlank(queueId)) {
-			throw new IllegalArgumentException("QueueID can't be null.");
-		}
-		List<Role> consumers = RoleAction.createRole(region, queueId, 1, role);
-		Role consumer = consumers.get(0);
-		return MessageAction.ackMsg(region, queueId, consumer.getId(), msgId);
 	}
+
+	public abstract class MessageHandler implements MsgHandler {
+
+		protected final String queueId;
+
+		public MessageHandler(String queueId) {
+			super();
+			this.queueId = queueId;
+		}
+
+		public abstract boolean processMsg(MessageData msg);
+
+		@Override
+		public boolean process(MessageData msg) {
+			if (msg == null || StringUtils.isBlank(msg.getMsgId())) {
+				logger.debug("Msg is Empty.");
+				return false;
+			}
+			// boolean ret = false;
+			// try {
+			// ret = processMsg(msg);
+			// } finally {
+			// if (ret) {
+			// ackMessage(queueId, msg);
+			// }
+			// }
+			// return ret;
+			return processMsg(msg);
+		}
+
+	}
+
+	// public Message getMessage(String region, String role, String queueId)
+	// throws ServerResponseException {
+	// if (StringUtils.isBlank(region)) {
+	// region = ServiceAttributes.getRegion();
+	// }
+	// if (StringUtils.isBlank(role)) {
+	// role = ServiceAttributes.getRole();
+	// }
+	// if (StringUtils.isBlank(queueId)) {
+	// throw new IllegalArgumentException("QueueID can't be null.");
+	// }
+	// // List<Role> consumers = RoleAction.createRole(region, queueId, 1,
+	// // role);
+	// // Role consumer = consumers.get(0);
+	// // return MessageAction.pullMsg(region, queueId, consumer.getId(),
+	// // consumer.getToken());
+	// return MessageAction.pullMsg(region, queueId,
+	// ServiceAttributes.getConsumerId(),
+	// ServiceAttributes.getConsumerToken());
+	// }
+
+	// public boolean ackMsg(String region, String role, String queueId, String
+	// msgId) throws ServerResponseException {
+	// if (StringUtils.isBlank(region)) {
+	// region = ServiceAttributes.getRegion();
+	// }
+	// if (StringUtils.isBlank(queueId)) {
+	// throw new IllegalArgumentException("QueueID can't be null.");
+	// }
+	// List<Role> consumers = RoleAction.createRole(region, queueId, 1, role);
+	// Role consumer = consumers.get(0);
+	// return MessageAction.ackMsg(region, queueId, consumer.getId(), msgId);
+	// }
 }
