@@ -15,6 +15,7 @@ import ch.qos.logback.classic.filter.ThresholdFilter
 import ch.qos.logback.core.rolling.RollingFileAppender
 import ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP
 import ch.qos.logback.core.rolling.TimeBasedRollingPolicy
+import java.nio.charset.Charset
 
 import static ch.qos.logback.classic.Level.DEBUG
 import static ch.qos.logback.classic.Level.INFO
@@ -46,7 +47,8 @@ appender("STDOUT", RollingFileAppender) {
     timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
       maxFileSize = "100MB"
     }
-    maxHistory = 30
+    maxHistory = 300
+    charset = Charset.forName("UTF-8")
   }
 }
 appender("A1", RollingFileAppender) {
@@ -61,7 +63,8 @@ appender("A1", RollingFileAppender) {
     timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
       maxFileSize = "100MB"
     }
-    maxHistory = 30
+    maxHistory = 300
+    charset = Charset.forName("UTF-8")
   }
 }
 appender("GPS-DATA", RollingFileAppender) {
@@ -76,7 +79,8 @@ appender("GPS-DATA", RollingFileAppender) {
     timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
       maxFileSize = "100MB"
     }
-    maxHistory = 30
+    maxHistory = 300
+    charset = Charset.forName("UTF-8")
   }
 }
 appender("JUHE-MOBILE-DATA", RollingFileAppender) {
@@ -91,7 +95,8 @@ appender("JUHE-MOBILE-DATA", RollingFileAppender) {
     timeBasedFileNamingAndTriggeringPolicy(SizeAndTimeBasedFNATP) {
       maxFileSize = "100MB"
     }
-    maxHistory = 30
+    maxHistory = 300
+    charset = Charset.forName("UTF-8")
   }
 }
 logger("com.alibaba.druid.filter.stat.StatFilter", INFO)
@@ -115,6 +120,7 @@ logger("com.ucloud.umq", INFO)
 logger("org.apache.http", INFO)
 logger("org.I0Itec.zkclient", INFO)
 logger("us.codecraft.webmagic", INFO)
+logger("io.grpc", INFO)
 logger("com.mljr.spider.scheduler.manager.Manager", DEBUG)
 logger("com.mljr.spider.scheduler.manager", DEBUG)
 logger("com.mljr.spider.scheduler", DEBUG)

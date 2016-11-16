@@ -1,6 +1,0 @@
-2016-11-13/21:09:03.330 INFO [spider-class com.mljr.spider.scheduler.AbstractScheduler$1-work-1] c.m.s.umq.UMQClient:68 - subscribe queue umq-luj3bt
-2016-11-13/21:09:03.353 INFO [main] c.m.s.s.m.Manager:58 - Start SaiGeGPSProcessor finished. 
-2016-11-13/21:09:03.354 INFO [Thread-1] u.c.webmagic.Spider:307 - Spider saige-gps started!
-2016-11-13/21:09:03.355 INFO [spider-class com.mljr.spider.scheduler.AbstractScheduler$1-work-2] c.m.s.umq.UMQClient:68 - subscribe queue umq-pevtvl
-2016-11-13/21:09:03.362 INFO [main] c.m.s.s.m.Manager:47 - Start JuheMobileProcessor finished. 
-2016-11-13/21:09:03.365 INFO [Thread-3] u.c.webmagic.Spider:307 - Spider juhe.cn started!

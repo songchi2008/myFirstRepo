@@ -63,7 +63,7 @@ public class UcloudApiClient {
 		String finalUrl = this.baseUrl + uri + "?" + query;
 		HttpGet getRequest = new HttpGet(this.baseUrl + uri + "?" + query);
 		if (logger.isDebugEnabled()) {
-			logger.debug("query uri " + getRequest.getURI());
+//			logger.debug("query uri " + getRequest.getURI());
 		}
 		getRequest.addHeader("accept", "application/json");
 

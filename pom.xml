@@ -17,6 +17,7 @@
 		<module>mljr-spider</module>
 		<module>mljr-dao</module>
 		<module>umq-client</module>
+		<module>grpc</module>
 	</modules>
 
 	<properties>

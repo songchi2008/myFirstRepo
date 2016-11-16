@@ -7,26 +7,25 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 
 /**
- * @author Ckex zha </br>
- *         2016年11月7日,下午5:20:39
+ * @author Ckex zha </br> 2016年11月7日,下午5:20:39
  *
  */
 public class SaiGeGPSProcessor extends AbstractPageProcessor {
 
-	private Site site = Site.me().setDomain("saige-gps");
+  private Site site = Site.me().setDomain("saige-gps").setCharset(UTF_8);
 
-	public SaiGeGPSProcessor() {
-		super();
-	}
+  public SaiGeGPSProcessor() {
+    super();
+  }
 
-	@Override
-	public void process(Page page) {
-		page.putField(page.getUrl().get(), page.getJson().get());
-	}
+  @Override
+  public void process(Page page) {
+    page.putField(page.getUrl().get(), page.getJson().get());
+  }
 
-	@Override
-	public Site getSite() {
-		return this.site;
-	}
+  @Override
+  public Site getSite() {
+    return this.site;
+  }
 
 }

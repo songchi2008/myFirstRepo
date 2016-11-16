@@ -4,6 +4,7 @@
 package com.mljr.spider.scheduler;
 
 import com.google.common.base.CharMatcher;
+import com.mljr.spider.scheduler.manager.AbstractMessage.PullMsgTask;
 import com.mljr.spider.umq.UMQMessage;
 
 import us.codecraft.webmagic.Request;
@@ -11,44 +12,47 @@ import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.Task;
 
 /**
- * @author Ckex zha </br>
- *         2016年11月10日,上午11:37:15
+ * @author Ckex zha </br> 2016年11月10日,上午11:37:15
  *
  */
 public class JuheMobileScheduler extends AbstractScheduler {
 
-	public static final String URL = "http://op.juhe.cn/onebox/phone/query?tel=%s&key=d3baaded0db0ea2dd0a359fb485e3d60";
+  public static final String URL = "http://op.juhe.cn/onebox/phone/query?tel=%s&key=d3baaded0db0ea2dd0a359fb485e3d60";
 
-	public JuheMobileScheduler(Spider spider, String queueId) throws Exception {
-		super(spider, queueId);
-	}
+  public JuheMobileScheduler(Spider spider, PullMsgTask task) throws Exception {
+    super(spider, task);
+  }
 
-	@Override
-	public void push(Request request, Task task) {
-		put(request);
-	}
+  public JuheMobileScheduler(Spider spider, String queueId) throws Exception {
+    super(spider, queueId);
+  }
 
-	@Override
-	public Request poll(Task task) {
-		return take();
-	}
+  @Override
+  public void push(Request request, Task task) {
+    put(request);
+  }
 
-	@Override
-	public int getLeftRequestsCount(Task task) {
-		return 0;
-	}
+  @Override
+  public Request poll(Task task) {
+    return take();
+  }
 
-	@Override
-	public int getTotalRequestsCount(Task task) {
-		return 0;
-	}
+  @Override
+  public int getLeftRequestsCount(Task task) {
+    return 0;
+  }
 
-	@Override
-	public boolean pushTask(Spider spider, UMQMessage message) {
-		String url = String.format(URL, message.msgData.getMsgBody());
-		url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
-		push(new Request(url), spider);
-		return true;
-	}
+  @Override
+  public int getTotalRequestsCount(Task task) {
+    return 0;
+  }
+
+  @Override
+  public boolean pushTask(Spider spider, UMQMessage message) {
+    String url = String.format(URL, message.message);
+    url = CharMatcher.WHITESPACE.replaceFrom(CharMatcher.anyOf("\r\n\t").replaceFrom(url, ""), "");
+    push(new Request(url), spider);
+    return true;
+  }
 
 }

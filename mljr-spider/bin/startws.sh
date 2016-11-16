@@ -83,7 +83,8 @@ if [ "$1" = "jmx" ]; then
 	JAVA_OPTS="$JAVA_OPTS -Djava.rmi.server.hostname=$RMI_HOST -Dcom.sun.management.jmxremote.port=$JMX_PORT -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.access.file=$JMX_ACCESS -Dcom.sun.management.jmxremote.password.file=$JMX_PASSWD"
 fi
 
-export JAVA_OPTS=" $JAVA_OPTS -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true"
+# charset
+export JAVA_OPTS=" $JAVA_OPTS -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true -Dfile.encoding=$CHAR_SET "
 
 EXIST_PIDS=`ps  --no-heading -C java -f --width 1000 | grep "$DEPLOY_HOME" |awk '{print $2}'`
 if [ ! -z "$EXIST_PIDS" ]; then

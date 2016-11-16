@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.mljr.spider.grpc";
+option java_outer_classname = "GrpcQueue";
+
+package model;
+
+service QueueServer {
+    rpc PullMsg (QueueRequest) returns (QueueResponse) {}
+}
+
+message QueueRequest {
+    string name = 1;
+}
+
+message QueueResponse {
+    string msg = 1;
+}
