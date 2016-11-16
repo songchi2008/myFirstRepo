@@ -37,7 +37,7 @@ public class Manager extends AbstractMessage {
   private void startJuheMobile() throws Exception {
     JuheMobileProcessor processor = new JuheMobileProcessor();
     LogPipeline pipeline = new LogPipeline(JUHE_MOBILE_LOG_NAME);
-    final Spider spider = Spider.create(processor).addPipeline(pipeline).setDownloader(new RestfulDownloader());
+    final Spider spider = Spider.create(processor).addPipeline(pipeline).setDownloader(new RestfulDownloader()).thread(MAX_SIZE + CORE_SIZE);
     spider.setSpiderListeners(Lists.newArrayList(listener));
     spider.setExecutorService(THREAD_POOL);
     // final AbstractScheduler scheduler = new JuheMobileScheduler(spider, JUHE_MOBILE_QUEUE_ID);

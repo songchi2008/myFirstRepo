@@ -22,7 +22,7 @@ import us.codecraft.webmagic.Site;
  */
 public class JuheMobileProcessor extends AbstractPageProcessor {
 
-  private Site site = Site.me().setDomain("juhe.cn").setSleepTime(10).setCharset(UTF_8);
+  private Site site = Site.me().setDomain("juhe.cn").setSleepTime(10).setRetryTimes(2).setRetrySleepTime(500).setCharset(UTF_8);
 
   public JuheMobileProcessor() {
     super();
