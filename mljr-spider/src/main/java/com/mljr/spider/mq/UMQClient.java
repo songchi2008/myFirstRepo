@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.mljr.spider.umq;
+package com.mljr.spider.mq;
 
 import java.net.URISyntaxException;
 

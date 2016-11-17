@@ -3,9 +3,11 @@
  */
 package com.mljr.spider.scheduler;
 
+import java.util.concurrent.BlockingQueue;
+
 import com.google.common.base.CharMatcher;
+import com.mljr.spider.mq.UMQMessage;
 import com.mljr.spider.scheduler.manager.AbstractMessage.PullMsgTask;
-import com.mljr.spider.umq.UMQMessage;
 
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Spider;
@@ -18,6 +20,10 @@ import us.codecraft.webmagic.Task;
 public class JuheMobileScheduler extends AbstractScheduler {
 
   public static final String URL = "http://op.juhe.cn/onebox/phone/query?tel=%s&key=d3baaded0db0ea2dd0a359fb485e3d60";
+
+  public JuheMobileScheduler(final Spider spider, BlockingQueue<UMQMessage> queue) throws Exception {
+    super(spider, queue);
+  }
 
   public JuheMobileScheduler(Spider spider, PullMsgTask task) throws Exception {
     super(spider, task);

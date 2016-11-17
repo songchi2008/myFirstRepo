@@ -23,9 +23,9 @@ import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.scheduler.MonitorableScheduler;
 import us.codecraft.webmagic.scheduler.Scheduler;
 
+import com.mljr.spider.mq.UMQClient;
+import com.mljr.spider.mq.UMQMessage;
 import com.mljr.spider.scheduler.manager.AbstractMessage.PullMsgTask;
-import com.mljr.spider.umq.UMQClient;
-import com.mljr.spider.umq.UMQMessage;
 import com.ucloud.umq.action.MessageData;
 
 /**
@@ -40,7 +40,7 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
 
   private static final AtomicLong count = new AtomicLong();
 
-  private final int THREAD_SIZE = 1;
+  private final int THREAD_SIZE = 1; // must 1
   protected final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(THREAD_SIZE, new ThreadFactory() {
 
     @Override
@@ -53,7 +53,13 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
 
   private BlockingQueue<Request> blockQueue = new LinkedBlockingQueue<Request>(QUEUE_SIZE);
 
+  public AbstractScheduler(final Spider spider, BlockingQueue<UMQMessage> mqMsgQueue) throws Exception {
+    super();
+    pullLocalQueue(spider, mqMsgQueue);
+  }
+
   public AbstractScheduler(final Spider spider, final PullMsgTask task) throws Exception {
+    super();
     pullMsgTask(spider, task);
   }
 
@@ -62,10 +68,25 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
     subscribeMsg(spider, qid);
   }
 
+  private void pullLocalQueue(final Spider spider, final BlockingQueue<UMQMessage> localQueue) {
+    startTask(new Runnable() {
+
+      @Override
+      public void run() {
+        for (;;) {
+          UMQMessage message = localQueue.poll();
+          if (message == null) {
+            break;
+          }
+          sentMsg(spider, message);
+        }
+      }
+    });
+  }
+
   private void pullMsgTask(final Spider spider, final PullMsgTask task) {
     final AtomicInteger id = new AtomicInteger(0);
-
-    executor.scheduleWithFixedDelay(new Runnable() {
+    startTask(new Runnable() {
 
       @Override
       public void run() {
@@ -78,7 +99,11 @@ public abstract class AbstractScheduler implements Scheduler, MonitorableSchedul
           sentMsg(spider, msg);
         }
       }
-    }, 0, 1, TimeUnit.SECONDS);
+    });
+  }
+
+  private void startTask(Runnable r) {
+    executor.scheduleWithFixedDelay(r, 0, 1, TimeUnit.SECONDS);
   }
 
   private void subscribeMsg(final Spider spider, final String qid) throws InterruptedException {

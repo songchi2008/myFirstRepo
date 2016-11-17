@@ -5,10 +5,10 @@ package com.mljr.spider.scheduler;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.mljr.spider.mq.UMQMessage;
 import com.mljr.spider.request.AbstractRequest;
 import com.mljr.spider.request.RestfulReqeust;
 import com.mljr.spider.scheduler.manager.AbstractMessage.PullMsgTask;
-import com.mljr.spider.umq.UMQMessage;
 
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Spider;
