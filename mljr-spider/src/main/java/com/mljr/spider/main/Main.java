@@ -3,6 +3,9 @@
  */
 package com.mljr.spider.main;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mljr.spider.scheduler.manager.Manager;
 
 /**
@@ -11,6 +14,8 @@ import com.mljr.spider.scheduler.manager.Manager;
  *
  */
 public class Main {
+
+	protected static transient Logger logger = LoggerFactory.getLogger(Main.class);
 
 	public Main() {
 		super();
@@ -21,6 +26,7 @@ public class Main {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
+		logger.info("start...");
 		Manager manager = new Manager();
 		manager.run();
 		synchronized (Main.class) {

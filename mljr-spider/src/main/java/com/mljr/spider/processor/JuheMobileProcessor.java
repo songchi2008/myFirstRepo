@@ -17,42 +17,45 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 
 /**
- * @author Ckex zha </br> 2016年11月10日,上午11:33:08
+ * @author Ckex zha </br>
+ *         2016年11月10日,上午11:33:08
  *
  */
 public class JuheMobileProcessor extends AbstractPageProcessor {
 
-  private Site site = Site.me().setDomain("juhe.cn").setSleepTime(10).setRetryTimes(2).setRetrySleepTime(500).setCharset(UTF_8);
+	private Site site = Site.me().setDomain("juhe.cn").setSleepTime(10).setRetryTimes(2).setRetrySleepTime(500)
+			.setCharset(UTF_8);
 
-  public JuheMobileProcessor() {
-    super();
-    site.addHeader("Content-Type", "application/json;charset=" + UTF_8);
-  }
+	public JuheMobileProcessor() {
+		super();
+		site.addHeader("Content-Type", "application/json;charset=" + UTF_8);
+	}
 
-  @Override
-  public void process(Page page) {
-    String text = page.getJson().get();
-    JSONObject jsonObject = JSON.parseObject(text);
-    Integer retCode = jsonObject.getInteger("error_code");
-    if (retCode != null && retCode.intValue() == 0) {
-      page.putField(page.getUrl().get(), text);
-      return;
-    }
-    if (logger.isDebugEnabled()) {
-      logger.debug(retCode + "==>" + page.getUrl());
-    }
-    List<NameValuePair> params = URLEncodedUtils.parse(page.getUrl().get(), Charset.forName(UTF_8));
-    for (NameValuePair nameValuePair : params) {
-      if (StringUtils.equalsIgnoreCase(nameValuePair.getName(), "tel")) {
-        logger.error("mobile=%s, result=%s", nameValuePair.getValue(), text);
-        return;
-      }
-    }
-  }
+	@Override
+	public void process(Page page) {
+		logger.debug("process" + page.getUrl());
+		String text = page.getJson().get();
+		JSONObject jsonObject = JSON.parseObject(text);
+		Integer retCode = jsonObject.getInteger("error_code");
+		if (retCode != null && retCode.intValue() == 0) {
+			page.putField(page.getUrl().get(), text);
+			return;
+		}
+		if (logger.isDebugEnabled()) {
+			logger.debug(retCode + "==>" + page.getUrl());
+		}
+		List<NameValuePair> params = URLEncodedUtils.parse(page.getUrl().get(), Charset.forName(UTF_8));
+		for (NameValuePair nameValuePair : params) {
+			if (StringUtils.equalsIgnoreCase(nameValuePair.getName(), "tel")) {
+				logger.error("mobile=%s, result=%s", nameValuePair.getValue(), text);
+				return;
+			}
+		}
+	}
 
-  @Override
-  public Site getSite() {
-    return this.site;
-  }
+	@Override
+	public Site getSite() {
+		return this.site;
+	}
 
 }

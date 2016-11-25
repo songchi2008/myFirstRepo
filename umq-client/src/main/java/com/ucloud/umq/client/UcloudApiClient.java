@@ -1,6 +1,6 @@
 package com.ucloud.umq.client;
 
-import com.ucloud.umq.common.ServiceAttributes;
+import com.ucloud.umq.common.ServiceConfig;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -123,9 +123,9 @@ public class UcloudApiClient {
 	}
 
 	public static void main(String[] args) {
-		String baseUrl = ServiceAttributes.getApiUri();
-		String publicKey = ServiceAttributes.getPublicKey();
-		String privateKey = ServiceAttributes.getPrivateKey();
+		String baseUrl = ServiceConfig.getApiUri();
+		String publicKey = ServiceConfig.getPublicKey();
+		String privateKey = ServiceConfig.getPrivateKey();
 
 		UcloudApiClient api = new UcloudApiClient(baseUrl, publicKey, privateKey);
 		Map<String, Object> params = new HashMap<String, Object>();

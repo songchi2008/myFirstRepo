@@ -48,7 +48,7 @@ appender("STDOUT", RollingFileAppender) {
       maxFileSize = "100MB"
     }
     maxHistory = 300
-    charset = Charset.forName("UTF-8")
+    // charset = Charset.forName("UTF-8")
   }
 }
 appender("A1", RollingFileAppender) {
@@ -64,7 +64,7 @@ appender("A1", RollingFileAppender) {
       maxFileSize = "100MB"
     }
     maxHistory = 300
-    charset = Charset.forName("UTF-8")
+    // charset = Charset.forName("UTF-8")
   }
 }
 appender("GPS-DATA", RollingFileAppender) {
@@ -80,7 +80,7 @@ appender("GPS-DATA", RollingFileAppender) {
       maxFileSize = "100MB"
     }
     maxHistory = 300
-    charset = Charset.forName("UTF-8")
+    // charset = Charset.forName("UTF-8")
   }
 }
 appender("JUHE-MOBILE-DATA", RollingFileAppender) {
@@ -96,7 +96,7 @@ appender("JUHE-MOBILE-DATA", RollingFileAppender) {
       maxFileSize = "100MB"
     }
     maxHistory = 300
-    charset = Charset.forName("UTF-8")
+    // charset = Charset.forName("UTF-8")
   }
 }
 logger("com.alibaba.druid.filter.stat.StatFilter", INFO)

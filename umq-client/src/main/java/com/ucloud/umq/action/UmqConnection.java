@@ -1,7 +1,7 @@
 package com.ucloud.umq.action;
 
 import com.ucloud.umq.client.UcloudApiClient;
-import com.ucloud.umq.common.ServiceAttributes;
+import com.ucloud.umq.common.ServiceConfig;
 
 
 /**
@@ -17,7 +17,7 @@ public class UmqConnection {
             synchronized (UmqConnection.class) {
                 if (instance == null) {
                     if (instance == null) {
-                        instance = new UcloudApiClient(ServiceAttributes.getApiUri(), publicKey, privateKey);
+                        instance = new UcloudApiClient(ServiceConfig.getApiUri(), publicKey, privateKey);
                     }
                 }
             }

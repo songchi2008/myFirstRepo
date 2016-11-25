@@ -42,6 +42,7 @@
 		<akka.version>2.3.15</akka.version>
 		<httpclient.version>4.5.1</httpclient.version>
 		<jedis.version>2.8.1</jedis.version>
+		<rabbitmq.version>3.6.5</rabbitmq.version>
 	</properties>
 
 	<dependencyManagement>
@@ -196,6 +197,16 @@
 				<version>${spring.version}</version>
 			</dependency>
 			<!-- spring end -->
+			<dependency>
+				<groupId>com.rabbitmq</groupId>
+				<artifactId>amqp-client</artifactId>
+				<version>${rabbitmq.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.jodah</groupId>
+				<artifactId>lyra</artifactId>
+				<version>0.5.2</version>
+			</dependency>
 			<dependency>
 				<groupId>share</groupId>
 				<artifactId>common.utils</artifactId>

@@ -14,7 +14,7 @@ import com.ucloud.umq.action.HttpClient;
 import com.ucloud.umq.action.MessageData;
 import com.ucloud.umq.action.MsgHandler;
 import com.ucloud.umq.client.ServerResponseException;
-import com.ucloud.umq.common.ServiceAttributes;
+import com.ucloud.umq.common.ServiceConfig;
 
 /**
  * @author Ckex zha </br>
@@ -39,15 +39,15 @@ public class UMQClient {
 
 	private UMQClient() {
 		super();
-		this.host = ServiceAttributes.getHost();
-		this.region = ServiceAttributes.getRegion();
-		this.account = ServiceAttributes.getAccount();
-		this.publicKey = ServiceAttributes.getPublicKey();
-		this.projectId = ServiceAttributes.getProjectId();
-		this.consumerId = ServiceAttributes.getConsumerId();
-		this.privateKey = ServiceAttributes.getPrivateKey();
-		this.consumerToken = ServiceAttributes.getConsumerToken();
-		this.organizationId = ServiceAttributes.getOrganizationId();
+		this.host = ServiceConfig.getHost();
+		this.region = ServiceConfig.getRegion();
+		this.account = ServiceConfig.getAccount();
+		this.publicKey = ServiceConfig.getPublicKey();
+		this.projectId = ServiceConfig.getProjectId();
+		this.consumerId = ServiceConfig.getConsumerId();
+		this.privateKey = ServiceConfig.getPrivateKey();
+		this.consumerToken = ServiceConfig.getConsumerToken();
+		this.organizationId = ServiceConfig.getOrganizationId();
 		this.client = initConnection();
 	}
 

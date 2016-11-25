@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.ucloud.umq.client.ServerResponseException;
-import com.ucloud.umq.common.ServiceAttributes;
+import com.ucloud.umq.common.ServiceConfig;
 import com.ucloud.umq.model.Message;
 import com.ucloud.umq.model.Role;
 
@@ -23,8 +23,8 @@ public class ConsumerTests {
 	}
 
 	public static void main(String[] args) throws ServerResponseException, InterruptedException {
-		String publicKey = ServiceAttributes.getPublicKey();
-		String privateKey = ServiceAttributes.getPrivateKey();
+		String publicKey = ServiceConfig.getPublicKey();
+		String privateKey = ServiceConfig.getPrivateKey();
 		UmqConnection.NewConnection(publicKey, privateKey);
 		String region = "cn-bj2";
 		String queueId = "umq-luj3bt";
