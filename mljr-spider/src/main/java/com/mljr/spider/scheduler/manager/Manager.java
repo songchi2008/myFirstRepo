@@ -3,10 +3,6 @@
  */
 package com.mljr.spider.scheduler.manager;
 
-import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.SpiderListener;
-import us.codecraft.webmagic.pipeline.FilePipeline;
-
 import com.google.common.collect.Lists;
 import com.mljr.spider.downloader.RestfulDownloader;
 import com.mljr.spider.listener.DownloaderSpiderListener;
@@ -17,7 +13,12 @@ import com.mljr.spider.scheduler.AbstractScheduler;
 import com.mljr.spider.scheduler.BaiduMobileScheduler;
 import com.mljr.spider.scheduler.JuheMobileScheduler;
 import com.mljr.spider.scheduler.SaiGeGPSScheduler;
+import com.mljr.spider.storage.LocalFilePipeline;
 import com.mljr.spider.storage.LogPipeline;
+
+import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.SpiderListener;
+import us.codecraft.webmagic.pipeline.FilePipeline;
 
 /**
  * @author Ckex zha </br>
@@ -67,7 +68,7 @@ public class Manager extends AbstractMessage {
 	// 百度手机号标签
 	private void startBaiduMobile() throws Exception {
 		BaiduMobileProcessor processor = new BaiduMobileProcessor();
-		FilePipeline pipeline = new FilePipeline(FILE_PATH);
+		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
 		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));

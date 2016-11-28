@@ -4,7 +4,6 @@
 package com.mljr.spider.processor;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -33,6 +32,11 @@ public class BaiduMobileProcessor extends AbstractPageProcessor {
 
 	@Override
 	public void process(Page page) {
+		if (Math.random() * 100 < 1) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("process--> " + page.getUrl());
+			}
+		}
 		// processContent(page);
 		String field = "";
 		page.putField(field, page.getHtml());

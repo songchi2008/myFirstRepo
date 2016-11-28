@@ -33,7 +33,11 @@ public class JuheMobileProcessor extends AbstractPageProcessor {
 
 	@Override
 	public void process(Page page) {
-		logger.debug("process" + page.getUrl());
+		if (Math.random() * 100 < 1) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("process--> " + page.getUrl());
+			}
+		}
 		String text = page.getJson().get();
 		JSONObject jsonObject = JSON.parseObject(text);
 		Integer retCode = jsonObject.getInteger("error_code");
