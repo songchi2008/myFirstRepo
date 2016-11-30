@@ -1,4 +1,4 @@
-package com.mljr.spider.dao;
+package com.mljr.spider.dao.impl;
 
 import javax.annotation.Resource;
 
@@ -18,7 +18,7 @@ public abstract class AbstractBasicDao extends SqlSessionDaoSupport {
 		super.setSqlSessionFactory(sqlSessionFactory);
 	}
 
-	public SqlSession getSqlSessionTemplate() {
+	protected SqlSession getSqlSessionTemplate() {
 		return getSqlSession();
 	}
 

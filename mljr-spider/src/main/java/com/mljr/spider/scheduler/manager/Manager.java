@@ -3,8 +3,12 @@
  */
 package com.mljr.spider.scheduler.manager;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.http.nio.reactor.IOReactorException;
+
 import com.google.common.collect.Lists;
 import com.mljr.spider.downloader.RestfulDownloader;
+import com.mljr.spider.http.AsyncHttpClient;
 import com.mljr.spider.listener.DownloaderSpiderListener;
 import com.mljr.spider.processor.BaiduMobileProcessor;
 import com.mljr.spider.processor.JuheMobileProcessor;
@@ -13,12 +17,15 @@ import com.mljr.spider.scheduler.AbstractScheduler;
 import com.mljr.spider.scheduler.BaiduMobileScheduler;
 import com.mljr.spider.scheduler.JuheMobileScheduler;
 import com.mljr.spider.scheduler.SaiGeGPSScheduler;
+import com.mljr.spider.storage.HttpPipeline;
 import com.mljr.spider.storage.LocalFilePipeline;
 import com.mljr.spider.storage.LogPipeline;
+import com.ucloud.umq.common.ServiceConfig;
 
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.SpiderListener;
 import us.codecraft.webmagic.pipeline.FilePipeline;
+import us.codecraft.webmagic.pipeline.Pipeline;
 
 /**
  * @author Ckex zha </br>
@@ -30,9 +37,18 @@ public class Manager extends AbstractMessage {
 	private static final int QUEUE_SIZE = 10;
 	private static final String FILE_PATH = "/data/html";
 	private final SpiderListener listener = new DownloaderSpiderListener();
+	private final AsyncHttpClient httpClient;
+	private final String url;
 
 	public Manager() {
 		super();
+		this.url = ServiceConfig.getSentUrl();
+		try {
+			this.httpClient = new AsyncHttpClient();
+		} catch (IOReactorException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Instantiation bean exception." + ExceptionUtils.getStackTrace(e));
+		}
 	}
 
 	public void run() throws Exception {
@@ -48,7 +64,8 @@ public class Manager extends AbstractMessage {
 	private void startJuheMobile() throws Exception {
 		JuheMobileProcessor processor = new JuheMobileProcessor();
 		LogPipeline pipeline = new LogPipeline(JUHE_MOBILE_LOG_NAME);
-		final Spider spider = Spider.create(processor).addPipeline(pipeline).setDownloader(new RestfulDownloader())
+		Pipeline htmlPipeline = new HttpPipeline(url, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).setDownloader(new RestfulDownloader())
 				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));
@@ -69,7 +86,8 @@ public class Manager extends AbstractMessage {
 	private void startBaiduMobile() throws Exception {
 		BaiduMobileProcessor processor = new BaiduMobileProcessor();
 		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		final Spider spider = Spider.create(processor).addPipeline(pipeline).thread(MAX_SIZE + CORE_SIZE)
+		Pipeline htmlPipeline = new HttpPipeline(url, this.httpClient, pipeline);
+		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
 		spider.setExecutorService(newThreadPool(CORE_SIZE, MAX_SIZE));

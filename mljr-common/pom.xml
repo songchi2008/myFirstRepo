@@ -6,14 +6,12 @@
 		<artifactId>spider</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>mljr-dao</artifactId>
+	<artifactId>mljr-common</artifactId>
 
 	<dependencies>
 		<dependency>
-			<groupId>com.ckex</groupId>
-			<artifactId>mljr-common</artifactId>
-			<version>${project.version}</version>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
 		</dependency>
 	</dependencies>
-
 </project>

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
+import com.mljr.redis.RedisClient;
+
 /**
  * @author Ckex zha </br>
  *         2016年11月7日,下午2:06:29
@@ -24,6 +26,9 @@ public class AbstractIMljrDaoTest extends AbstractJUnit4SpringContextTests {
 	}
 
 	@Autowired
-	protected MljrTestDao mljrTestDao;
+	protected YyUserAddressBookDao yyUserAddressBookDao;
+
+	@Autowired
+	protected RedisClient redisClient;
 
 }

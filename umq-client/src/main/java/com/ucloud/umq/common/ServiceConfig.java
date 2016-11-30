@@ -144,6 +144,10 @@ public class ServiceConfig {
 		return properties.getProperty("rmq.password");
 	}
 
+	public static String getSentUrl() {
+		return properties.getProperty("sent.url");
+	}
+
 	public static Properties getProperties() {
 		return properties;
 	}

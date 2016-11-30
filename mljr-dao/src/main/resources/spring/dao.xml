@@ -49,4 +49,13 @@
 		</property>
 	</bean>
 
+	<bean id="redisClient" class="com.mljr.redis.RedisClient">
+		<constructor-arg name="host" value="${redis.host}" />
+		<constructor-arg name="port" value="${redis.port}" />
+		<constructor-arg name="timeout" value="${redis.timeout}" />
+		<constructor-arg name="maxTotal" value="${redis.maxTotal}" />
+		<constructor-arg name="maxIdle" value="${redis.maxIdle}" />
+		<constructor-arg name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+	</bean>
+
 </beans>
