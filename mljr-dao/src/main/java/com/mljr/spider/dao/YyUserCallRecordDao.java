@@ -1,6 +1,8 @@
 package com.mljr.spider.dao;
 
 import java.lang.Integer;
+import java.util.List;
+
 import com.mljr.spider.model.YyUserCallRecordDo;
 import common.page.util.PageList;
 import common.page.util.PageQuery;
@@ -11,13 +13,15 @@ import common.page.util.PageQuery;
  */
 public interface YyUserCallRecordDao {
 
-    YyUserCallRecordDo load(Long id);
+	YyUserCallRecordDo load(Long id);
 
-    boolean delete(Long id);
+	boolean delete(Long id);
 
-    YyUserCallRecordDo create(YyUserCallRecordDo record);
+	YyUserCallRecordDo create(YyUserCallRecordDo record);
 
-    boolean update(YyUserCallRecordDo record);
+	boolean update(YyUserCallRecordDo record);
 
-    PageList<YyUserCallRecordDo>  listByPage(PageQuery pageQuery, Integer count);
+	PageList<YyUserCallRecordDo> listByPage(PageQuery pageQuery, Integer count);
+
+	List<YyUserCallRecordDo> listById(long id, int limit);
 }

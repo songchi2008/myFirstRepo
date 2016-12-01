@@ -2,6 +2,7 @@ package com.ucloud.umq.common;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.slf4j.impl.StaticMDCBinder;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -146,6 +147,14 @@ public class ServiceConfig {
 
 	public static String getSentUrl() {
 		return properties.getProperty("sent.url");
+	}
+	
+	public static String getMobileExchange(){
+		return properties.getProperty("rmq.mobile.exchange");
+	}
+	
+	public static String getMobilerRoutingKey(){
+		return properties.getProperty("rmq.mobile.routingKey");
 	}
 
 	public static Properties getProperties() {

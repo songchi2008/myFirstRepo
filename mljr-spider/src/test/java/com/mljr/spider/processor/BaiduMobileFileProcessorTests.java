@@ -34,7 +34,8 @@ public class BaiduMobileFileProcessorTests {
 	}
 
 	private static void test1() throws Exception {
-		String url = String.format(URL, "03178117334", "03178117334");
+		// String url = String.format(URL, "03178117334", "03178117334");
+		String url = String.format(URL, "15601662655", "15601662655");
 		Pipeline pipeline = new FilePipeline();
 		Spider spider = Spider.create(new BaiduMobileProcessor()).addUrl(url).addPipeline(pipeline);
 		spider.addPipeline(new ConsolePipeline());
@@ -43,8 +44,9 @@ public class BaiduMobileFileProcessorTests {
 	}
 
 	public static void test2() throws Exception {
-		String url = String.format(URL, "03178117334", "03178117334");
-		Pipeline pipeline = new HttpPipeline("http://172.28.43.68:8080/mljr_pub_api/html/baidu-mobile",
+		// String url = String.format(URL, "03178117334", "03178117334");
+		String url = String.format(URL, "15601662655", "15601662655");
+		Pipeline pipeline = new HttpPipeline("http://172.28.43.68:8080/mljr_pub_api/html/baiduMobile",
 				new AsyncHttpClient(), null);
 		Spider spider = Spider.create(new BaiduMobileProcessor()).addUrl(url).addPipeline(pipeline);
 		TimeUnit.SECONDS.sleep(1);

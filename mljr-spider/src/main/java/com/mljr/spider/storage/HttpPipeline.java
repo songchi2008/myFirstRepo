@@ -7,7 +7,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -19,11 +21,14 @@ import org.apache.http.concurrent.FutureCallback;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
+import org.aspectj.weaver.NewConstructorTypeMunger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Stopwatch;
 import com.mljr.spider.http.AsyncHttpClient;
 
+import net.sf.ehcache.util.counter.Counter;
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
@@ -36,6 +41,19 @@ import us.codecraft.webmagic.pipeline.Pipeline;
 public class HttpPipeline implements Pipeline {
 
 	protected static transient Logger logger = LoggerFactory.getLogger(HttpPipeline.class);
+
+	private static final Counter COUNTER = new Counter();
+
+	private static class Counter {
+		private AtomicLong num = new AtomicLong(0);
+		private AtomicLong failure = new AtomicLong(0);
+
+		@Override
+		public String toString() {
+			return "Counter [all=" + num + ", failure=" + failure + ", failure rate=" + failure.get() / num.get() + "]";
+		}
+
+	}
 
 	private final String url;
 	private final Pipeline standbyPipeline;
@@ -63,16 +81,22 @@ public class HttpPipeline implements Pipeline {
 			return;
 		}
 		final AtomicBoolean flag = new AtomicBoolean(true);
+		final Stopwatch watch = Stopwatch.createStarted();
 		boolean success = sentContent(html, new FutureCallback<HttpResponse>() {
 
 			@Override
 			public void completed(HttpResponse result) {
 				try {
+					watch.stop();
 					int code = result.getStatusLine().getStatusCode();
-					logger.debug("response code:" + code);
-					if (code != 200 && flag.compareAndSet(true, false)) {
-						standbyPipeline.process(items, t);
+					if (code != 200) {
+						COUNTER.failure.incrementAndGet();
+						if (flag.compareAndSet(true, false)) {
+							standbyPipeline.process(items, t);
+						}
 					}
+					logger.debug("response code:" + code + ",useTime " + watch.elapsed(TimeUnit.MILLISECONDS) + ","
+							+ COUNTER.toString());
 				} catch (Exception e) {
 					if (logger.isDebugEnabled()) {
 						e.printStackTrace();
@@ -88,6 +112,9 @@ public class HttpPipeline implements Pipeline {
 
 			@Override
 			public void failed(Exception ex) {
+				COUNTER.failure.incrementAndGet();
+				logger.debug("useTime " + watch.elapsed(TimeUnit.MILLISECONDS) + "," + COUNTER.toString());
+				watch.stop();
 				if (flag.compareAndSet(true, false)) {
 					// 记录到文件
 					standbyPipeline.process(items, t);
@@ -96,6 +123,7 @@ public class HttpPipeline implements Pipeline {
 
 			@Override
 			public void cancelled() {
+				COUNTER.failure.incrementAndGet();
 				if (flag.compareAndSet(true, false)) {
 					// 记录到文件
 					standbyPipeline.process(items, t);
@@ -152,6 +180,7 @@ public class HttpPipeline implements Pipeline {
 		}
 		// post.setEntity(EntityBuilder.create().setContentEncoding("UTF-8").setText(html).setContentType(contentType)
 		// .gzipCompress().build());
+		COUNTER.num.incrementAndGet();
 		httpclient.post(post, callback, 3000);
 		return true;
 	}

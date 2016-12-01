@@ -3,9 +3,12 @@
  */
 package com.mljr.spider.scheduler.manager;
 
+import java.io.File;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.nio.reactor.IOReactorException;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.mljr.spider.downloader.RestfulDownloader;
 import com.mljr.spider.http.AsyncHttpClient;
@@ -64,7 +67,8 @@ public class Manager extends AbstractMessage {
 	private void startJuheMobile() throws Exception {
 		JuheMobileProcessor processor = new JuheMobileProcessor();
 		LogPipeline pipeline = new LogPipeline(JUHE_MOBILE_LOG_NAME);
-		Pipeline htmlPipeline = new HttpPipeline(url, this.httpClient, pipeline);
+		String targetUrl = Joiner.on(File.separator).join(url, "json", "juhe-mobile");
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).setDownloader(new RestfulDownloader())
 				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));
@@ -86,7 +90,8 @@ public class Manager extends AbstractMessage {
 	private void startBaiduMobile() throws Exception {
 		BaiduMobileProcessor processor = new BaiduMobileProcessor();
 		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		Pipeline htmlPipeline = new HttpPipeline(url, this.httpClient, pipeline);
+		String targetUrl = Joiner.on(File.separator).join(url, "html", "baidu-mobile");
+		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
 		spider.setSpiderListeners(Lists.newArrayList(listener));

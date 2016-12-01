@@ -1,7 +1,8 @@
 package com.mljr.spider.dao.impl;
 
+import java.util.List;
+
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -33,8 +34,10 @@ public class YyUserAddressBookDaoImplTest extends AbstractIMljrDaoTest {
 	@Test
 	public void testLoad() {
 		long id = 1;
-		YyUserAddressBookDo load = yyUserAddressBookDao.load(id);
-		logger.debug("result ==> " + load);
+		List<YyUserAddressBookDo> list = yyUserAddressBookDao.listById(id, 10);
+		for (YyUserAddressBookDo yyUserAddressBookDo : list) {
+			logger.debug(yyUserAddressBookDo.toString());
+		}
 		// Assert.assertNotNull(load);
 		// Assert.assertEquals("feiyingtest", load.getXxxx());
 		// logger.debug(load.toString());

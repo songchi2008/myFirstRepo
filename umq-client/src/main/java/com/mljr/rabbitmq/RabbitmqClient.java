@@ -10,10 +10,10 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Consumer;
-import com.rabbitmq.client.AMQP.BasicProperties;
 
 /**
  * @author Ckex zha </br>
@@ -49,7 +49,7 @@ public class RabbitmqClient {
 
 	public static void publishMessage(Channel channel, String exchange, String routingKey, BasicProperties props,
 			byte[] body) throws IOException {
-		channel.basicPublish(exchange, routingKey, props, body);
+		channel.basicPublish(exchange, (routingKey == null ? "" : routingKey), props, body);
 	}
 
 	private static final class RabbitmqClientHolder {
