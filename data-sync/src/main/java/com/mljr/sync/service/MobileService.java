@@ -5,6 +5,7 @@ package com.mljr.sync.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -38,6 +39,8 @@ import redis.clients.jedis.Jedis;
 public class MobileService {
 
 	protected static transient Logger logger = LoggerFactory.getLogger(MobileService.class);
+
+	private static final int LIMIT = 50;
 
 	@Autowired
 	private YyUserAddressBookDao yyUserAddressBookDao;
@@ -90,12 +93,12 @@ public class MobileService {
 
 	private List<YyUserCallRecordDo> listYyUserCallRecord(String key) {
 		long lastId = getLastId(key);
-		return yyUserCallRecordDao.listById(lastId, 100);
+		return yyUserCallRecordDao.listById(lastId, LIMIT);
 	}
 
 	private List<YyUserAddressBookDo> listYyUserAddressBook(String key) {
 		long lastId = getLastId(key);
-		return yyUserAddressBookDao.listById(lastId, 100);
+		return yyUserAddressBookDao.listById(lastId, LIMIT);
 	}
 
 	private void syncYyUserAddressBook(Function<String, Boolean> function) {
@@ -132,8 +135,9 @@ public class MobileService {
 		try {
 			RabbitmqClient.publishMessage(channel, ServiceConfig.getMobileExchange(),
 					ServiceConfig.getMobilerRoutingKey(), builder.build(), mobile.getBytes(Charsets.UTF_8));
-			if (logger.isDebugEnabled()) {
-				logger.debug("Sent message finished. " + mobile);
+			try {
+				TimeUnit.MILLISECONDS.sleep(10);
+			} catch (InterruptedException e) {
 			}
 			return true;
 		} catch (IOException e) {
