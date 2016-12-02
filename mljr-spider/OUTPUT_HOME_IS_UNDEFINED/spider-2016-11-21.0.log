@@ -1,4 +1,0 @@
-2016-11-21/11:17:54.422 INFO [main] c.m.s.s.m.Manager:63 - Start JuheMobileProcessor finished. 
-2016-11-21/11:17:54.422 INFO [Thread-0] u.c.webmagic.Spider:307 - Spider juhe.cn started!
-2016-11-21/11:17:54.427 INFO [main] c.m.s.s.m.Manager:89 - Start BaiduMobileProcessor finished. 
-2016-11-21/11:17:54.431 INFO [Thread-1] u.c.webmagic.Spider:307 - Spider null started!
