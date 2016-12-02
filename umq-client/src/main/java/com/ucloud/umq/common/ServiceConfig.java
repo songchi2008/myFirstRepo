@@ -148,12 +148,20 @@ public class ServiceConfig {
 	public static String getSentUrl() {
 		return properties.getProperty("sent.url");
 	}
-	
-	public static String getMobileExchange(){
+
+	public static String getBaiduMobilePath() {
+		return properties.getProperty("baidu.mobile.path");
+	}
+
+	public static String getJuheMobilePath() {
+		return properties.getProperty("juhe.mobile.path");
+	}
+
+	public static String getMobileExchange() {
 		return properties.getProperty("rmq.mobile.exchange");
 	}
-	
-	public static String getMobilerRoutingKey(){
+
+	public static String getMobilerRoutingKey() {
 		return properties.getProperty("rmq.mobile.routingKey");
 	}
 

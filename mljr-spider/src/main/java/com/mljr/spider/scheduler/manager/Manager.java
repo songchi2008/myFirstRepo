@@ -67,7 +67,7 @@ public class Manager extends AbstractMessage {
 	private void startJuheMobile() throws Exception {
 		JuheMobileProcessor processor = new JuheMobileProcessor();
 		LogPipeline pipeline = new LogPipeline(JUHE_MOBILE_LOG_NAME);
-		String targetUrl = Joiner.on(File.separator).join(url, "json", "juhe-mobile");
+		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getJuheMobilePath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).setDownloader(new RestfulDownloader())
 				.thread(MAX_SIZE + CORE_SIZE).setExitWhenComplete(false);
@@ -90,7 +90,7 @@ public class Manager extends AbstractMessage {
 	private void startBaiduMobile() throws Exception {
 		BaiduMobileProcessor processor = new BaiduMobileProcessor();
 		FilePipeline pipeline = new LocalFilePipeline(FILE_PATH);
-		String targetUrl = Joiner.on(File.separator).join(url, "html", "baidu-mobile");
+		String targetUrl = Joiner.on(File.separator).join(url, ServiceConfig.getBaiduMobilePath());
 		Pipeline htmlPipeline = new HttpPipeline(targetUrl, this.httpClient, pipeline);
 		final Spider spider = Spider.create(processor).addPipeline(htmlPipeline).thread(MAX_SIZE + CORE_SIZE)
 				.setExitWhenComplete(false);
